@@ -8,6 +8,10 @@ The Android app includes the Compose navigation shell, location permission flow,
 
 The backend migration is in `supabase/migrations/001_initial_schema.sql`. It creates the core schema, RLS policies, and timestamp-based latest-location trigger. Supabase URL and publishable key must be supplied outside source control before cloud authentication or sync can be activated.
 
+## Supabase email confirmation
+
+In Supabase Dashboard, open **Authentication → URL Configuration** and add `solace://auth-callback` as an Additional Redirect URL. The Android manifest owns this deep link. Without it, Supabase uses its default Site URL (often `http://localhost:3000`) after email confirmation.
+
 ## Android testing
 
 1. Open this directory in Android Studio.
