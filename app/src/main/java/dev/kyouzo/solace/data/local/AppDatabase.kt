@@ -84,6 +84,11 @@ interface LocationDao {
     @Query("SELECT * FROM sync_outbox WHERE state = 'PENDING' ORDER BY createdAt LIMIT :limit") suspend fun pending(limit: Int): List<SyncOutboxEntity>
     @Query("UPDATE sync_outbox SET state = :state, attempts = attempts + 1, lastAttemptAt = :at WHERE id IN (:ids)") suspend fun markOutbox(ids: List<String>, state: SyncState, at: Long)
     @Query("UPDATE location_points SET syncState = :state WHERE id IN (:ids)") suspend fun markPoints(ids: List<String>, state: SyncState)
+    @Query("SELECT * FROM sync_outbox WHERE state = 'PENDING' AND destination = :destination ORDER BY createdAt LIMIT :limit") suspend fun pendingFor(destination: SyncDestination, limit: Int): List<SyncOutboxEntity>
+    @Query("SELECT * FROM location_points WHERE id IN (:ids)") suspend fun pointsByIds(ids: List<String>): List<LocationPointEntity>
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun saveRemote(location: RemoteLocationEntity)
+    @Query("DELETE FROM remote_locations") suspend fun clearRemote()
+    @Query("SELECT * FROM remote_locations ORDER BY recordedAt DESC LIMIT 1") fun observeLatestRemote(): Flow<RemoteLocationEntity?>
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun savePlace(place: SavedPlaceEntity)
     @Query("SELECT * FROM saved_places ORDER BY createdAt DESC") fun observePlaces(): Flow<List<SavedPlaceEntity>>
     @Query("DELETE FROM saved_places WHERE id = :id") suspend fun deletePlace(id: String)

@@ -12,6 +12,12 @@ The backend migration is in `supabase/migrations/001_initial_schema.sql`. It cre
 
 In Supabase Dashboard, open **Authentication → URL Configuration** and add `solace://auth-callback` as an Additional Redirect URL. The Android manifest owns this deep link. Without it, Supabase uses its default Site URL (often `http://localhost:3000`) after email confirmation.
 
+## Pairing and sync
+
+Run `supabase/migrations/002_pairing_and_sharing.sql` in the Supabase SQL Editor (after 001). It adds profile bootstrap, one-time pairing codes, the sharing toggle and `couple_status`. No custom SMTP or domain is needed.
+
+Flow: both people sign in, one taps **Create invitation code**, the other enters it under **Join with code**, then each turns on **Share my location**. Points upload only while your own sharing is on, and you only see each other when both are on.
+
 ## Android testing
 
 1. Open this directory in Android Studio.
