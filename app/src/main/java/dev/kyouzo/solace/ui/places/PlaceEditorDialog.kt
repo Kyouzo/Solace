@@ -38,7 +38,8 @@ import org.osmdroid.util.GeoPoint
 import java.util.Locale
 import java.util.UUID
 
-private val radiusOptions = listOf(50f, 100f, 150f, 300f)
+private val radiusOptions = listOf(20f, 50f, 100f, 150f, 300f)
+private const val DEFAULT_RADIUS = 20f
 
 /**
  * Create a place: pick a template, set its location (current position, pin on a map, or typed coordinates) and an alert radius.
@@ -52,7 +53,7 @@ fun PlaceEditorDialog(initialKind: PlaceKind, currentFix: GeoPoint?, shared: Boo
     var name by remember { mutableStateOf(if (initialKind == PlaceKind.CUSTOM) "" else kindLabels.getValue(initialKind)) }
     var latitude by remember { mutableStateOf("") }
     var longitude by remember { mutableStateOf("") }
-    var radius by remember { mutableFloatStateOf(150f) }
+    var radius by remember { mutableFloatStateOf(DEFAULT_RADIUS) }
     var picking by remember { mutableStateOf(false) }
 
     val lat = latitude.toDoubleOrNull()
@@ -112,6 +113,7 @@ fun PlaceEditorDialog(initialKind: PlaceKind, currentFix: GeoPoint?, shared: Boo
                         FilterChip(selected = radius == option, onClick = { radius = option }, label = { Text(stringResource(R.string.meters_short, option.toInt())) })
                     }
                 }
+                Text(stringResource(R.string.places_radius_hint), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text(stringResource(if (shared) R.string.places_visible_shared else R.string.places_visible_local), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         },

@@ -57,7 +57,7 @@ data class SyncOutboxEntity(
 )
 
 @Entity(tableName = "remote_locations", indices = [Index(value = ["userId", "recordedAt"])])
-data class RemoteLocationEntity(@PrimaryKey val id: String, val userId: String, val latitude: Double, val longitude: Double, val accuracy: Float, val recordedAt: Long, val receivedAt: Long)
+data class RemoteLocationEntity(@PrimaryKey val id: String, val userId: String, val latitude: Double, val longitude: Double, val accuracy: Float, val recordedAt: Long, val receivedAt: Long, val batteryLevel: Int? = null)
 
 @Entity(tableName = "devices")
 data class DeviceEntity(@PrimaryKey val id: String, val userId: String, val name: String, val batteryLevel: Int?, val charging: Boolean?, val lastSeenAt: Long?)
@@ -127,13 +127,16 @@ interface LocationDao {
 }
 
 @TypeConverters(DatabaseConverters::class)
-@Database(entities = [LocationPointEntity::class, SyncOutboxEntity::class, RemoteLocationEntity::class, DeviceEntity::class, AppSettingsEntity::class, SavedPlaceEntity::class], version = 3, exportSchema = true)
+@Database(entities = [LocationPointEntity::class, SyncOutboxEntity::class, RemoteLocationEntity::class, DeviceEntity::class, AppSettingsEntity::class, SavedPlaceEntity::class], version = 4, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun locationDao(): LocationDao
     companion object {
         @Volatile private var instance: AppDatabase? = null
         fun get(context: Context): AppDatabase = instance ?: synchronized(this) {
-            instance ?: Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "solace.db").addMigrations(MIGRATION_1_2, MIGRATION_2_3).build().also { instance = it }
+            instance ?: Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "solace.db").addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4).build().also { instance = it }
+        }
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) { db.execSQL("ALTER TABLE remote_locations ADD COLUMN batteryLevel INTEGER") }
         }
         private val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(db: SupportSQLiteDatabase) {

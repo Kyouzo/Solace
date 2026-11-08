@@ -49,7 +49,12 @@ import dev.kyouzo.solace.data.local.RemoteLocationEntity
 import dev.kyouzo.solace.data.remote.SupabaseAuthRepository
 import dev.kyouzo.solace.tracking.TrackingControl
 import dev.kyouzo.solace.ui.account.PartnerPanel
+import dev.kyouzo.solace.data.remote.SyncRepository
+import dev.kyouzo.solace.ui.common.BatteryChip
 import dev.kyouzo.solace.ui.common.IconBadge
+import dev.kyouzo.solace.ui.common.rememberBattery
+import kotlinx.coroutines.delay
+import androidx.compose.runtime.LaunchedEffect
 import dev.kyouzo.solace.ui.common.PrivacyCard
 import dev.kyouzo.solace.ui.common.SectionTitle
 import dev.kyouzo.solace.ui.common.SolaceCard
@@ -110,18 +115,24 @@ private fun MapSurface(modifier: Modifier, onOpenSettings: () -> Unit) {
     val mine by dao.observeLast().collectAsState(null)
     val partner by dao.observeLatestRemote().collectAsState(null)
     val sync by rememberSyncUiState()
+    val battery = rememberBattery()
+    val repo = remember { SyncRepository(context) }
+    // While this screen is open and you're paired, keep your partner's position and battery fresh.
+    LaunchedEffect(sync.paired) { if (sync.paired) while (true) { repo.refreshPartner(); delay(30_000) } }
     val myPoint = mine?.let { GeoPoint(it.latitude, it.longitude) }
     val partnerPoint = partner?.let { GeoPoint(it.latitude, it.longitude) }
 
     Box(modifier) {
         LiveMap(Modifier.fillMaxSize(), me = myPoint, partner = partnerPoint, follow = follow && tracking, focus = focus, onUserInteract = { follow = false }, showAttribution = false)
 
-        StatusPill(
-            text = stringResource(if (tracking) R.string.pill_recording else R.string.pill_paused),
-            dot = if (tracking) SolaceMint else MaterialTheme.colorScheme.outline,
-            pulse = tracking,
-            modifier = Modifier.align(Alignment.TopStart).padding(16.dp)
-        )
+        Row(Modifier.align(Alignment.TopStart).padding(16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            StatusPill(
+                text = stringResource(if (tracking) R.string.pill_recording else R.string.pill_paused),
+                dot = if (tracking) SolaceMint else MaterialTheme.colorScheme.outline,
+                pulse = tracking
+            )
+            battery?.let { BatteryChip(it.percent, charging = it.charging) }
+        }
         SmallFloatingActionButton(
             onClick = { myPoint?.let { follow = true; focusId++; focus = FocusRequest(focusId, it) } },
             modifier = Modifier.align(Alignment.TopEnd).padding(16.dp),
@@ -202,6 +213,7 @@ private fun PartnerLine(partner: RemoteLocationEntity?, paired: Boolean, onShow:
                 style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
+        partner?.batteryLevel?.let { BatteryChip(it) }
         when {
             partner != null -> TextButton(onClick = onShow) { Text(stringResource(R.string.action_show)) }
             !paired -> TextButton(onClick = onSetUp) { Text(stringResource(R.string.action_set_up)) }

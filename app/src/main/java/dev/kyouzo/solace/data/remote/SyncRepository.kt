@@ -28,6 +28,12 @@ class SyncRepository(context: Context) {
 
     fun session() = auth.savedSession()
 
+    /** Lightweight refresh of just the partner's latest location and battery (also drives the arrive/leave alerts). */
+    suspend fun refreshPartner(): Result<Long?> = runCatching {
+        val session = auth.savedSession() ?: error("Sign in first.")
+        pullPartner(session.userId)
+    }
+
     suspend fun syncNow(): Result<SyncReport> = runCatching {
         val session = auth.savedSession() ?: error("Sign in first.")
         // Refresh the server-side sharing/pairing state first so the local flag never goes stale (e.g. after reinstall).
@@ -81,28 +87,28 @@ class SyncRepository(context: Context) {
     }
 
     private suspend fun pullPartner(userId: String): Long? {
-        val text = rest.request("GET", "latest_locations?select=user_id,recorded_at,location_points(id,latitude,longitude,accuracy,received_at)&user_id=neq.$userId").getOrThrow()
+        val text = rest.request("GET", "latest_locations?select=user_id,recorded_at,location_points(id,latitude,longitude,accuracy,battery_level,received_at)&user_id=neq.$userId").getOrThrow()
         val rows = JSONArray(text)
         // Server returns nothing unless both people have sharing on; mirror that locally so stale data disappears.
         dao.clearRemote()
         var latest: Long? = null
-        var latestPoint: Pair<Double, Double>? = null
+        var latestPoint: Triple<Double, Double, Float>? = null
         for (i in 0 until rows.length()) {
             val row = rows.getJSONObject(i)
             val point = row.optJSONObject("location_points") ?: continue
             val recordedAt = OffsetDateTime.parse(row.getString("recorded_at")).toInstant().toEpochMilli()
             val receivedAt = runCatching { OffsetDateTime.parse(point.getString("received_at")).toInstant().toEpochMilli() }.getOrDefault(recordedAt)
-            dao.saveRemote(RemoteLocationEntity(point.getString("id"), row.getString("user_id"), point.getDouble("latitude"), point.getDouble("longitude"), point.getDouble("accuracy").toFloat(), recordedAt, receivedAt))
-            if (latest == null || recordedAt > latest) { latest = recordedAt; latestPoint = point.getDouble("latitude") to point.getDouble("longitude") }
+            dao.saveRemote(RemoteLocationEntity(point.getString("id"), row.getString("user_id"), point.getDouble("latitude"), point.getDouble("longitude"), point.getDouble("accuracy").toFloat(), recordedAt, receivedAt, if (point.isNull("battery_level")) null else point.optInt("battery_level")))
+            if (latest == null || recordedAt > latest) { latest = recordedAt; latestPoint = Triple(point.getDouble("latitude"), point.getDouble("longitude"), point.getDouble("accuracy").toFloat()) }
         }
-        latestPoint?.let { PlaceMonitor.check(app, "partner", it.first, it.second) }
+        latestPoint?.let { PlaceMonitor.check(app, prefs.getString("partner_name", null), it.first, it.second, it.third) }
         return latest
     }
 
     suspend fun coupleStatus(): Result<CoupleStatus> = rest.request("POST", "rpc/couple_status", "{}").mapCatching {
         val json = JSONObject(it)
         CoupleStatus(json.optBoolean("paired"), json.optBoolean("my_sharing"), json.optBoolean("partner_sharing"), json.optString("partner_name").takeIf { n -> n.isNotBlank() && n != "null" })
-    }.onSuccess { setSharingFlag(it.mySharing); prefs.edit().putBoolean("paired", it.paired).apply() }
+    }.onSuccess { setSharingFlag(it.mySharing); prefs.edit().putBoolean("paired", it.paired).putString("partner_name", it.partnerName).apply() }
 
     /**
      * Two-way sync of saved places with the shared cloud table. Only runs while paired; before that places stay on this phone

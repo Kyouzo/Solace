@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CloudDownload
 import androidx.compose.material.icons.outlined.GpsFixed
 import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -78,5 +79,22 @@ fun OfflineMapRow() {
         subtitle = if (files.isEmpty()) stringResource(R.string.offline_empty_summary) else stringResource(R.string.offline_summary, files.size, formatBytes(context, files.sumOf { it.length() })),
         onClick = { open = true },
         trailing = { Text(stringResource(R.string.offline_action_manage), color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelLarge) }
+    )
+}
+
+/** Summarises how many permissions still need attention and opens the permissions page. */
+@Composable
+fun PermissionsRow() {
+    val context = LocalContext.current
+    var open by remember { mutableStateOf(false) }
+    val resumed = rememberResumeTick()
+    val missing = remember(open, resumed) { AppPermissions.missingCount(context) }
+    if (open) PermissionsDialog(onDismiss = { open = false })
+    SettingRow(
+        icon = Icons.Outlined.Security,
+        title = stringResource(R.string.perm_title),
+        subtitle = if (missing == 0) stringResource(R.string.perm_all_set) else stringResource(R.string.perm_need_attention, missing),
+        onClick = { open = true },
+        trailing = { Text(stringResource(R.string.offline_action_manage), color = if (missing == 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary, style = MaterialTheme.typography.labelLarge) }
     )
 }

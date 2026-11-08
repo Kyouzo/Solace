@@ -1,0 +1,418 @@
+africa/algeria|Algeria|297
+africa/angola|Angola|116
+africa/benin|Benin|49
+africa/botswana|Botswana|96
+africa/burkina-faso|Burkina Faso|88
+africa/burundi|Burundi|39
+africa/cameroon|Cameroon|261
+africa/canary-islands|Canary Islands|49
+africa/cape-verde|Cape Verde|11
+africa/central-african-republic|Central African Republic|155
+africa/chad|Chad|159
+africa/comores|Comores|5
+africa/congo-brazzaville|Congo Brazzaville|50
+africa/congo-democratic-republic|Congo Democratic Republic|483
+africa/djibouti|Djibouti|7
+africa/egypt|Egypt|175
+africa/equatorial-guinea|Equatorial Guinea|13
+africa/eritrea|Eritrea|36
+africa/ethiopia|Ethiopia|169
+africa/gabon|Gabon|40
+africa/ghana|Ghana|110
+africa/guinea|Guinea|112
+africa/guinea-bissau|Guinea Bissau|12
+africa/ivory-coast|Ivory Coast|86
+africa/kenya|Kenya|321
+africa/lesotho|Lesotho|91
+africa/liberia|Liberia|41
+africa/libya|Libya|116
+africa/madagascar|Madagascar|373
+africa/malawi|Malawi|139
+africa/mali|Mali|207
+africa/mauritania|Mauritania|57
+africa/mauritius|Mauritius|26
+africa/morocco|Morocco|214
+africa/mozambique|Mozambique|267
+africa/namibia|Namibia|84
+africa/niger|Niger|114
+africa/nigeria|Nigeria|729
+africa/rwanda|Rwanda|63
+africa/saint-helena-ascension-and-tristan-da-cunha|Saint Helena Ascension And Tristan Da Cunha|65
+africa/sao-tome-and-principe|Sao Tome And Principe|2
+africa/senegal-and-gambia|Senegal And Gambia|103
+africa/seychelles|Seychelles|16
+africa/sierra-leone|Sierra Leone|40
+africa/somalia|Somalia|190
+africa/south-africa-and-lesotho|South Africa And Lesotho|560
+africa/south-sudan|South Sudan|159
+africa/sudan|Sudan|257
+africa/swaziland|Swaziland|27
+africa/tanzania|Tanzania|612
+africa/togo|Togo|59
+africa/tunisia|Tunisia|67
+africa/uganda|Uganda|370
+africa/zambia|Zambia|248
+africa/zimbabwe|Zimbabwe|174
+asia/afghanistan|Afghanistan|136
+asia/armenia|Armenia|45
+asia/azerbaijan|Azerbaijan|54
+asia/bangladesh|Bangladesh|400
+asia/bhutan|Bhutan|23
+asia/cambodia|Cambodia|43
+asia/china/anhui|China · Anhui|52
+asia/china/beijing|China · Beijing|34
+asia/china/chongqing|China · Chongqing|35
+asia/china/fujian|China · Fujian|47
+asia/china/gansu|China · Gansu|99
+asia/china/guangdong|China · Guangdong|164
+asia/china/guangxi|China · Guangxi|63
+asia/china/guizhou|China · Guizhou|37
+asia/china/hainan|China · Hainan|19
+asia/china/hebei|China · Hebei|125
+asia/china/heilongjiang|China · Heilongjiang|82
+asia/china/henan|China · Henan|64
+asia/china/hong-kong|China · Hong Kong|28
+asia/china/hubei|China · Hubei|63
+asia/china/hunan|China · Hunan|57
+asia/china/inner-mongolia|China · Inner Mongolia|170
+asia/china/jiangsu|China · Jiangsu|92
+asia/china/jiangxi|China · Jiangxi|56
+asia/china/jilin|China · Jilin|44
+asia/china/liaoning|China · Liaoning|39
+asia/china/macau|China · Macau|2
+asia/china/ningxia|China · Ningxia|14
+asia/china/qinghai|China · Qinghai|45
+asia/china/shaanxi|China · Shaanxi|107
+asia/china/shandong|China · Shandong|85
+asia/china/shanghai|China · Shanghai|27
+asia/china/shanxi|China · Shanxi|42
+asia/china/sichuan|China · Sichuan|124
+asia/china/tianjin|China · Tianjin|16
+asia/china/tibet|China · Tibet|100
+asia/china/xinjiang|China · Xinjiang|134
+asia/china/yunnan|China · Yunnan|99
+asia/china/zhejiang|China · Zhejiang|96
+asia/east-timor|East Timor|18
+asia/gcc-states|Gcc States|313
+asia/india|India|1536
+asia/india/central-zone|India · Central Zone|313
+asia/india/eastern-zone|India · Eastern Zone|210
+asia/india/north-eastern-zone|India · North Eastern Zone|113
+asia/india/northern-zone|India · Northern Zone|205
+asia/india/southern-zone|India · Southern Zone|520
+asia/india/western-zone|India · Western Zone|203
+asia/indonesia|Indonesia|1741
+asia/indonesia/java|Indonesia · Java|875
+asia/indonesia/kalimantan|Indonesia · Kalimantan|159
+asia/indonesia/maluku|Indonesia · Maluku|50
+asia/indonesia/nusa-tenggara|Indonesia · Nusa Tenggara|172
+asia/indonesia/papua|Indonesia · Papua|56
+asia/indonesia/sulawesi|Indonesia · Sulawesi|171
+asia/indonesia/sumatra|Indonesia · Sumatra|295
+asia/iran|Iran|292
+asia/iraq|Iraq|100
+asia/israel-and-palestine|Israel And Palestine|88
+asia/japan|Japan|1638
+asia/japan/chubu|Japan · Chubu|377
+asia/japan/chugoku|Japan · Chugoku|164
+asia/japan/hokkaido|Japan · Hokkaido|164
+asia/japan/kansai|Japan · Kansai|281
+asia/japan/kanto|Japan · Kanto|422
+asia/japan/kyushu|Japan · Kyushu|257
+asia/japan/shikoku|Japan · Shikoku|69
+asia/japan/tohoku|Japan · Tohoku|230
+asia/jordan|Jordan|29
+asia/kazakhstan|Kazakhstan|419
+asia/kyrgyzstan|Kyrgyzstan|90
+asia/laos|Laos|59
+asia/lebanon|Lebanon|42
+asia/malaysia-singapore-brunei|Malaysia Singapore Brunei|217
+asia/maldives|Maldives|6
+asia/mongolia|Mongolia|151
+asia/myanmar|Myanmar|314
+asia/nepal|Nepal|378
+asia/north-korea|North Korea|99
+asia/pakistan|Pakistan|189
+asia/philippines|Philippines|563
+asia/south-korea|South Korea|262
+asia/sri-lanka|Sri Lanka|138
+asia/syria|Syria|84
+asia/taiwan|Taiwan|243
+asia/tajikistan|Tajikistan|50
+asia/thailand|Thailand|299
+asia/turkmenistan|Turkmenistan|57
+asia/uzbekistan|Uzbekistan|155
+asia/vietnam|Vietnam|278
+asia/yemen|Yemen|60
+australia-oceania/american-oceania-1|American Oceania 1|24
+australia-oceania/american-oceania-2|American Oceania 2|44
+australia-oceania/american-oceania-3|American Oceania 3|44
+australia-oceania/australia|Australia|1638
+australia-oceania/cook-islands|Cook Islands|33
+australia-oceania/fiji-1|Fiji 1|6
+australia-oceania/fiji-2|Fiji 2|27
+australia-oceania/ile-de-clipperton|Ile De Clipperton|1
+australia-oceania/kiribati-1|Kiribati 1|1
+australia-oceania/kiribati-2|Kiribati 2|81
+australia-oceania/kiribati-3|Kiribati 3|15
+australia-oceania/marshall-islands|Marshall Islands|36
+australia-oceania/micronesia|Micronesia|52
+australia-oceania/nauru|Nauru|4
+australia-oceania/new-caledonia|New Caledonia|39
+australia-oceania/new-zealand-1|New Zealand 1|373
+australia-oceania/new-zealand-2|New Zealand 2|356
+australia-oceania/niue|Niue|6
+australia-oceania/palau|Palau|9
+australia-oceania/papua-new-guinea|Papua New Guinea|103
+australia-oceania/pitcairn-islands|Pitcairn Islands|22
+australia-oceania/polynesie-francaise|Polynesie Francaise|98
+australia-oceania/samoa|Samoa|5
+australia-oceania/solomon-islands|Solomon Islands|40
+australia-oceania/tokelau|Tokelau|5
+australia-oceania/tonga|Tonga|14
+australia-oceania/tuvalu-1|Tuvalu 1|3
+australia-oceania/tuvalu-2|Tuvalu 2|8
+australia-oceania/vanuatu|Vanuatu|20
+australia-oceania/wallis-et-futuna|Wallis Et Futuna|6
+central-america/bahamas|Bahamas|29
+central-america/belize|Belize|22
+central-america/costa-rica|Costa Rica|37
+central-america/cuba|Cuba|62
+central-america/el-salvador|El Salvador|33
+central-america/guatemala|Guatemala|129
+central-america/haiti-and-domrep|Haiti And Domrep|77
+central-america/honduras|Honduras|77
+central-america/jamaica|Jamaica|37
+central-america/nicaragua|Nicaragua|57
+central-america/panama|Panama|37
+europe/albania|Albania|43
+europe/andorra|Andorra|2
+europe/austria|Austria|528
+europe/azores|Azores|23
+europe/belarus|Belarus|311
+europe/belgium|Belgium|494
+europe/bosnia-herzegovina|Bosnia Herzegovina|151
+europe/bulgaria|Bulgaria|147
+europe/croatia|Croatia|167
+europe/cyprus|Cyprus|31
+europe/czech-republic|Czech Republic|578
+europe/denmark|Denmark|321
+europe/estonia|Estonia|104
+europe/faroe-islands|Faroe Islands|8
+europe/finland|Finland|677
+europe/france|France|3379
+europe/france/alsace|France · Alsace|86
+europe/france/aquitaine|France · Aquitaine|212
+europe/france/auvergne|France · Auvergne|115
+europe/france/basse-normandie|France · Basse Normandie|104
+europe/france/bourgogne|France · Bourgogne|153
+europe/france/bretagne|France · Bretagne|209
+europe/france/centre|France · Centre|176
+europe/france/champagne-ardenne|France · Champagne Ardenne|80
+europe/france/corse|France · Corse|26
+europe/france/franche-comte|France · Franche Comte|89
+europe/france/guadeloupe|France · Guadeloupe|17
+europe/france/guyane|France · Guyane|16
+europe/france/haute-normandie|France · Haute Normandie|79
+europe/france/ile-de-france|France · Ile De France|201
+europe/france/languedoc-roussillon|France · Languedoc Roussillon|179
+europe/france/limousin|France · Limousin|73
+europe/france/lorraine|France · Lorraine|123
+europe/france/martinique|France · Martinique|14
+europe/france/mayotte|France · Mayotte|7
+europe/france/midi-pyrenees|France · Midi Pyrenees|249
+europe/france/nord-pas-de-calais|France · Nord Pas De Calais|160
+europe/france/pays-de-la-loire|France · Pays De La Loire|239
+europe/france/picardie|France · Picardie|106
+europe/france/poitou-charentes|France · Poitou Charentes|147
+europe/france/provence-alpes-cote-d-azur|France · Provence Alpes Cote D Azur|234
+europe/france/reunion|France · Reunion|22
+europe/france/rhone-alpes|France · Rhone Alpes|343
+europe/georgia|Georgia|87
+europe/germany|Germany|3072
+europe/germany/baden-wuerttemberg|Germany · Baden Wuerttemberg|406
+europe/germany/bayern|Germany · Bayern|551
+europe/germany/berlin|Germany · Berlin|52
+europe/germany/brandenburg|Germany · Brandenburg|188
+europe/germany/bremen|Germany · Bremen|13
+europe/germany/hamburg|Germany · Hamburg|28
+europe/germany/hessen|Germany · Hessen|219
+europe/germany/mecklenburg-vorpommern|Germany · Mecklenburg Vorpommern|96
+europe/germany/niedersachsen|Germany · Niedersachsen|349
+europe/germany/nordrhein-westfalen|Germany · Nordrhein Westfalen|586
+europe/germany/rheinland-pfalz|Germany · Rheinland Pfalz|183
+europe/germany/saarland|Germany · Saarland|35
+europe/germany/sachsen|Germany · Sachsen|166
+europe/germany/sachsen-anhalt|Germany · Sachsen Anhalt|124
+europe/germany/schleswig-holstein|Germany · Schleswig Holstein|110
+europe/germany/thueringen|Germany · Thueringen|112
+europe/great-britain|Great Britain|1536
+europe/greece|Greece|256
+europe/guernsey-jersey|Guernsey Jersey|3
+europe/hungary|Hungary|255
+europe/iceland|Iceland|92
+europe/ireland-and-northern-ireland|Ireland And Northern Ireland|323
+europe/isle-of-man|Isle Of Man|5
+europe/italy|Italy|1638
+europe/italy/centro|Italy · Centro|284
+europe/italy/isole|Italy · Isole|174
+europe/italy/nord-est|Italy · Nord Est|440
+europe/italy/nord-ovest|Italy · Nord Ovest|405
+europe/italy/sud|Italy · Sud|319
+europe/kosovo|Kosovo|27
+europe/latvia|Latvia|105
+europe/liechtenstein|Liechtenstein|2
+europe/lithuania|Lithuania|182
+europe/luxembourg|Luxembourg|32
+europe/macedonia|Macedonia|24
+europe/malta|Malta|6
+europe/moldova|Moldova|83
+europe/monaco|Monaco|1
+europe/montenegro|Montenegro|27
+europe/netherlands|Netherlands|903
+europe/netherlands/drenthe|Netherlands · Drenthe|41
+europe/netherlands/flevoland|Netherlands · Flevoland|24
+europe/netherlands/friesland|Netherlands · Friesland|62
+europe/netherlands/gelderland|Netherlands · Gelderland|121
+europe/netherlands/groningen|Netherlands · Groningen|37
+europe/netherlands/limburg|Netherlands · Limburg|63
+europe/netherlands/noord-brabant|Netherlands · Noord Brabant|135
+europe/netherlands/noord-holland|Netherlands · Noord Holland|124
+europe/netherlands/overijssel|Netherlands · Overijssel|75
+europe/netherlands/utrecht|Netherlands · Utrecht|62
+europe/netherlands/zeeland|Netherlands · Zeeland|30
+europe/netherlands/zuid-holland|Netherlands · Zuid Holland|140
+europe/norway|Norway|1741
+europe/poland|Poland|1536
+europe/portugal|Portugal|365
+europe/romania|Romania|287
+europe/serbia|Serbia|193
+europe/slovakia|Slovakia|226
+europe/slovenia|Slovenia|228
+europe/spain|Spain|1126
+europe/spain/andalucia|Spain · Andalucia|168
+europe/spain/aragon|Spain · Aragon|80
+europe/spain/asturias|Spain · Asturias|26
+europe/spain/cantabria|Spain · Cantabria|25
+europe/spain/castilla-la-mancha|Spain · Castilla La Mancha|86
+europe/spain/castilla-y-leon|Spain · Castilla Y Leon|145
+europe/spain/cataluna|Spain · Cataluna|199
+europe/spain/ceuta|Spain · Ceuta|1
+europe/spain/extremadura|Spain · Extremadura|33
+europe/spain/galicia|Spain · Galicia|79
+europe/spain/islas-baleares|Spain · Islas Baleares|38
+europe/spain/la-rioja|Spain · La Rioja|10
+europe/spain/madrid|Spain · Madrid|62
+europe/spain/melilla|Spain · Melilla|1
+europe/spain/murcia|Spain · Murcia|27
+europe/spain/navarra|Spain · Navarra|29
+europe/spain/pais-vasco|Spain · Pais Vasco|52
+europe/spain/valencia|Spain · Valencia|109
+europe/sweden|Sweden|792
+europe/switzerland|Switzerland|319
+europe/turkey|Turkey|586
+europe/ukraine|Ukraine|833
+europe/united-kingdom/england|United Kingdom · England|1126
+europe/united-kingdom/scotland|United Kingdom · Scotland|276
+europe/united-kingdom/wales|United Kingdom · Wales|111
+north-america/canada/alberta|Canada · Alberta|310
+north-america/canada/british-columbia|Canada · British Columbia|757
+north-america/canada/manitoba|Canada · Manitoba|218
+north-america/canada/new-brunswick|Canada · New Brunswick|59
+north-america/canada/newfoundland-and-labrador|Canada · Newfoundland And Labrador|332
+north-america/canada/northwest-territories|Canada · Northwest Territories|735
+north-america/canada/nova-scotia|Canada · Nova Scotia|81
+north-america/canada/nunavut|Canada · Nunavut|2048
+north-america/canada/ontario|Canada · Ontario|697
+north-america/canada/prince-edward-island|Canada · Prince Edward Island|11
+north-america/canada/quebec|Canada · Quebec|972
+north-america/canada/saskatchewan|Canada · Saskatchewan|136
+north-america/canada/yukon|Canada · Yukon|139
+north-america/greenland|Greenland|1536
+north-america/mexico|Mexico|686
+north-america/us-midwest|US Midwest|1638
+north-america/us-northeast|US Northeast|1126
+north-america/us-south|US South|2867
+north-america/us-west|US West|2150
+north-america/us/alabama|US · Alabama|123
+north-america/us/alaska-1|US · Alaska 1|590
+north-america/us/alaska-2|US · Alaska 2|577
+north-america/us/arizona|US · Arizona|241
+north-america/us/arkansas|US · Arkansas|77
+north-america/us/california|US · California|855
+north-america/us/colorado|US · Colorado|262
+north-america/us/connecticut|US · Connecticut|133
+north-america/us/delaware|US · Delaware|17
+north-america/us/district-of-columbia|US · District Of Columbia|12
+north-america/us/florida|US · Florida|637
+north-america/us/georgia|US · Georgia|253
+north-america/us/hawaii|US · Hawaii|80
+north-america/us/idaho|US · Idaho|100
+north-america/us/illinois|US · Illinois|273
+north-america/us/indiana|US · Indiana|159
+north-america/us/iowa|US · Iowa|102
+north-america/us/kansas|US · Kansas|97
+north-america/us/kentucky|US · Kentucky|107
+north-america/us/louisiana|US · Louisiana|111
+north-america/us/maine|US · Maine|72
+north-america/us/maryland|US · Maryland|156
+north-america/us/massachusetts|US · Massachusetts|192
+north-america/us/michigan|US · Michigan|260
+north-america/us/minnesota|US · Minnesota|213
+north-america/us/mississippi|US · Mississippi|63
+north-america/us/missouri|US · Missouri|153
+north-america/us/montana|US · Montana|94
+north-america/us/nebraska|US · Nebraska|82
+north-america/us/nevada|US · Nevada|103
+north-america/us/new-hampshire|US · New Hampshire|51
+north-america/us/new-jersey|US · New Jersey|120
+north-america/us/new-mexico|US · New Mexico|108
+north-america/us/new-york|US · New York|360
+north-america/us/north-carolina|US · North Carolina|303
+north-america/us/north-dakota|US · North Dakota|79
+north-america/us/ohio|US · Ohio|256
+north-america/us/oklahoma|US · Oklahoma|116
+north-america/us/oregon|US · Oregon|188
+north-america/us/pennsylvania|US · Pennsylvania|258
+north-america/us/puerto-rico|US · Puerto Rico|65
+north-america/us/rhode-island|US · Rhode Island|34
+north-america/us/south-carolina|US · South Carolina|120
+north-america/us/south-dakota|US · South Dakota|46
+north-america/us/tennessee|US · Tennessee|142
+north-america/us/texas|US · Texas|569
+north-america/us/us-virgin-islands|US · US Virgin Islands|3
+north-america/us/utah|US · Utah|124
+north-america/us/vermont|US · Vermont|33
+north-america/us/virginia|US · Virginia|287
+north-america/us/washington|US · Washington|281
+north-america/us/west-virginia|US · West Virginia|90
+north-america/us/wisconsin|US · Wisconsin|225
+north-america/us/wyoming|US · Wyoming|84
+russia/central-fed-district|Central Fed District|773
+russia/crimean-fed-district|Crimean Fed District|34
+russia/far-eastern-fed-district-1|Far Eastern Fed District 1|1536
+russia/far-eastern-fed-district-2|Far Eastern Fed District 2|1536
+russia/kaliningrad|Kaliningrad|27
+russia/north-caucasus-fed-district|North Caucasus Fed District|138
+russia/northwestern-fed-district|Northwestern Fed District|1331
+russia/siberian-fed-district|Siberian Fed District|1741
+russia/south-fed-district|South Fed District|309
+russia/ural-fed-district|Ural Fed District|624
+russia/volga-fed-district|Volga Fed District|791
+south-america/argentina|Argentina|542
+south-america/bolivia|Bolivia|171
+south-america/brazil|Brazil|2150
+south-america/brazil/centro-oeste|Brazil · Centro Oeste|234
+south-america/brazil/nordeste|Brazil · Nordeste|442
+south-america/brazil/norte|Brazil · Norte|284
+south-america/brazil/sudeste|Brazil · Sudeste|768
+south-america/brazil/sul|Brazil · Sul|387
+south-america/chile|Chile|651
+south-america/colombia|Colombia|331
+south-america/ecuador|Ecuador|125
+south-america/guyana|Guyana|23
+south-america/paraguay|Paraguay|146
+south-america/peru|Peru|289
+south-america/suriname|Suriname|28
+south-america/uruguay|Uruguay|45
+south-america/venezuela|Venezuela|152

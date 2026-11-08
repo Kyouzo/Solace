@@ -202,7 +202,31 @@
     <string name="notif_channel_tracking">Location sharing</string>
     <string name="notif_channel_places">Place alerts</string>
     <string name="place_arrived">%1$s arrived at %2$s</string>
+    <string name="place_partner_home_in">%1$s is home</string>
+    <string name="place_partner_home_out">%1$s went out</string>
     <string name="place_left">%1$s left %2$s</string>
     <string name="who_you">You</string>
     <string name="who_partner">Your partner</string>
+
+    <!-- Battery -->
+    <string name="battery_percent">%1$d%%</string>
+    <string name="battery_cd">Battery</string>
+    <string name="places_radius_hint">A small radius is most precise outdoors. Indoors, GPS can be off by 10–30 m, so Solace waits for a clear fix before announcing arrivals and departures.</string>
+
+    <!-- Permissions -->
+    <string name="perm_title">System permissions</string>
+    <string name="perm_all_set">All permissions allowed</string>
+    <string name="perm_need_attention">%1$d need attention</string>
+    <string name="perm_allowed">Allowed</string>
+    <string name="perm_allow">Allow</string>
+    <string name="perm_location">Location</string>
+    <string name="perm_location_body">Needed to record where you go. Without it, recording and the map can’t work.</string>
+    <string name="perm_precise">Precise location</string>
+    <string name="perm_precise_body">Needed for metre-level tracking. Approximate location is too coarse for accurate routes and place alerts.</string>
+    <string name="perm_always">Always allow location</string>
+    <string name="perm_always_body">Lets recording and sharing continue when the screen is off or Solace is closed. Choose “Allow all the time” on the next screen.</string>
+    <string name="perm_notifications">Notifications</string>
+    <string name="perm_notifications_body">Shows the recording notice and tells you when your partner arrives or leaves a saved place.</string>
+    <string name="perm_battery">Ignore battery optimization</string>
+    <string name="perm_battery_body">Stops Android from pausing recording to save power, so updates aren’t interrupted. Choose Allow in the dialog.</string>
 </resources>

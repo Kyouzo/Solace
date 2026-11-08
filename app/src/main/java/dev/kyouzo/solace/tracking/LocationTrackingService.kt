@@ -22,6 +22,9 @@ import dev.kyouzo.solace.data.remote.SyncRepository
 import dev.kyouzo.solace.data.remote.SyncScheduler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -40,6 +43,8 @@ class LocationTrackingService : Service() {
         val deviceId = identity.getString("device_id", null) ?: UUID.randomUUID().toString().also { identity.edit().putString("device_id", it).apply() }
         LocationCapture(identity.getString("user_id", "local")!!, deviceId)
     }
+    private val sync by lazy { SyncRepository(this) }
+    private var partnerPoller: Job? = null
     private val callback = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult) {
             val fixes = result.locations
@@ -52,6 +57,13 @@ class LocationTrackingService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(42, notification(), if (Build.VERSION.SDK_INT >= 29) ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION else 0)
         requestUpdates()
+        // While recording, check on the partner every 45 s so their battery and arrive/leave alerts stay fresh.
+        if (partnerPoller?.isActive != true) partnerPoller = scope.launch {
+            while (isActive) {
+                if (SyncRepository.sharingEnabled(this@LocationTrackingService)) sync.refreshPartner()
+                delay(45_000)
+            }
+        }
         return START_STICKY
     }
 
@@ -71,7 +83,6 @@ class LocationTrackingService : Service() {
         if (!LocationFilter.accepts(location, dao.last(), precision)) return
         val (point, cloud, peer) = capture.create(location, batteryLevel())
         dao.insertCapturedPoint(point, cloud, peer)
-        PlaceMonitor.check(this, "me", point.latitude, point.longitude)
         if (SyncRepository.sharingEnabled(this)) SyncScheduler.kick(this)
     }
 
