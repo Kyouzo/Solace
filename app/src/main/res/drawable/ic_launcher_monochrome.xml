@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Single-colour version for Android 13+ themed icons: the system tints the opaque areas. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- pin with the inner disc cut out -->
+    <path
+        android:fillColor="#FF000000"
+        android:fillType="evenOdd"
+        android:pathData="M54,25C44.06,25 36,33.06 36,43C36,56.5 54,76 54,76C54,76 72,56.5 72,43C72,33.06 63.94,25 54,25ZM43,43a11,11 0 1,0 22,0a11,11 0 1,0 -22,0z" />
+    <!-- the two dots sit inside the cut-out -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M44.8,43a3.8,3.8 0 1,0 7.6,0a3.8,3.8 0 1,0 -7.6,0z" />
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M55.6,43a3.8,3.8 0 1,0 7.6,0a3.8,3.8 0 1,0 -7.6,0z" />
+</vector>

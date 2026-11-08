@@ -18,6 +18,16 @@ Run `supabase/migrations/002_pairing_and_sharing.sql` in the Supabase SQL Editor
 
 Flow: both people sign in, one taps **Create invitation code**, the other enters it under **Join with code**, then each turns on **Share my location**. Points upload only while your own sharing is on, and you only see each other when both are on.
 
+## Map tiles (optional HD key)
+
+The map works with no setup using plain OpenStreetMap tiles (softer on high-density screens, dark mode is inverted light tiles, no offline download because OSM's servers forbid bulk downloads).
+
+For sharp retina tiles, a real dark style and the automatic offline area, get a CARTO basemaps API key and add this line to `local.properties`, then rebuild. The file is gitignored, so the key stays out of source control:
+
+```
+MAP_API_KEY=your-carto-key
+```
+
 ## Android testing
 
 1. Open this directory in Android Studio.

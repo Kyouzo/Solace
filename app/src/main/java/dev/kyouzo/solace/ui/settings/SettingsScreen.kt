@@ -89,6 +89,8 @@ fun SettingsScreen() {
         item { SectionLabel(stringResource(R.string.group_storage)) }
         item {
             SettingsGroup {
+                OfflineMapRow()
+                GroupDivider()
                 SettingRow(Icons.Outlined.Map, stringResource(R.string.row_map_tiles), stringResource(R.string.map_tiles_value))
                 GroupDivider()
                 SettingRow(Icons.Outlined.PhoneAndroid, stringResource(R.string.row_local_history), stringResource(R.string.local_history_value))

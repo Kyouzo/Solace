@@ -1,6 +1,7 @@
 package dev.kyouzo.solace.ui.settings
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CloudDownload
 import androidx.compose.material.icons.outlined.GpsFixed
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import dev.kyouzo.solace.R
+import dev.kyouzo.solace.data.offline.OfflineStore
+import dev.kyouzo.solace.ui.offline.OfflineMapsDialog
+import dev.kyouzo.solace.ui.offline.formatBytes
 import dev.kyouzo.solace.tracking.Retention
 import dev.kyouzo.solace.tracking.TrackingControl
 import dev.kyouzo.solace.tracking.TrackingPrecision
@@ -57,5 +61,22 @@ fun PrecisionRow() {
             TrackingControl.restartIfActive(context)
         },
         trailing = { Text(stringResource(if (precision == TrackingPrecision.MAXIMUM) R.string.precision_max else R.string.precision_balanced), color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelLarge) }
+    )
+}
+
+/** Summarises saved offline maps and opens the screen where free maps are downloaded and managed. */
+@Composable
+fun OfflineMapRow() {
+    val context = LocalContext.current
+    var open by remember { mutableStateOf(false) }
+    var summaryVersion by remember { mutableIntStateOf(0) }
+    val files = remember(summaryVersion) { OfflineStore.downloadedFiles(context) }
+    if (open) OfflineMapsDialog(onDismiss = { open = false; summaryVersion++ })
+    SettingRow(
+        icon = Icons.Outlined.CloudDownload,
+        title = stringResource(R.string.offline_title),
+        subtitle = if (files.isEmpty()) stringResource(R.string.offline_empty_summary) else stringResource(R.string.offline_summary, files.size, formatBytes(context, files.sumOf { it.length() })),
+        onClick = { open = true },
+        trailing = { Text(stringResource(R.string.offline_action_manage), color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelLarge) }
     )
 }

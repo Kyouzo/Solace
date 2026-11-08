@@ -41,6 +41,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.kyouzo.solace.R
 import dev.kyouzo.solace.data.local.AppDatabase
 import dev.kyouzo.solace.data.local.LocationPointEntity
@@ -113,7 +114,7 @@ private fun MapSurface(modifier: Modifier, onOpenSettings: () -> Unit) {
     val partnerPoint = partner?.let { GeoPoint(it.latitude, it.longitude) }
 
     Box(modifier) {
-        LiveMap(Modifier.fillMaxSize(), me = myPoint, partner = partnerPoint, follow = follow && tracking, focus = focus, onUserInteract = { follow = false })
+        LiveMap(Modifier.fillMaxSize(), me = myPoint, partner = partnerPoint, follow = follow && tracking, focus = focus, onUserInteract = { follow = false }, showAttribution = false)
 
         StatusPill(
             text = stringResource(if (tracking) R.string.pill_recording else R.string.pill_paused),
@@ -173,6 +174,7 @@ fun ControlCard(
                 }
             }
             PartnerLine(partner, paired, onShowPartner, onOpenSettings)
+            Text(MapTiles.attribution, style = MaterialTheme.typography.labelMedium.copy(fontSize = 9.sp), color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f))
         }
     }
 }

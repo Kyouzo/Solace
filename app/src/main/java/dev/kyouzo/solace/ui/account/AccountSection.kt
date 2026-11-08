@@ -57,7 +57,7 @@ fun AccountSection() {
                 TextButton(
                     onClick = {
                         auth.signOut()
-                        scope.launch { AppDatabase.get(context).locationDao().clearRemote() }
+                        scope.launch { AppDatabase.get(context).locationDao().apply { clearRemote(); deleteSyncedPlaces() } }
                         session = null
                     },
                     modifier = Modifier.fillMaxWidth()

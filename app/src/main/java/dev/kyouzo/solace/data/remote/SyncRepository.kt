@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import dev.kyouzo.solace.data.local.AppDatabase
 import dev.kyouzo.solace.data.local.RemoteLocationEntity
+import dev.kyouzo.solace.data.local.SavedPlaceEntity
 import dev.kyouzo.solace.data.local.SyncDestination
 import dev.kyouzo.solace.data.local.SyncState
 import dev.kyouzo.solace.tracking.PlaceMonitor
@@ -31,6 +32,7 @@ class SyncRepository(context: Context) {
         val session = auth.savedSession() ?: error("Sign in first.")
         // Refresh the server-side sharing/pairing state first so the local flag never goes stale (e.g. after reinstall).
         coupleStatus()
+        syncPlaces() // best effort: a places failure must not block location sync
         var uploaded = 0
         if (sharingEnabled(app)) {
             registerDevice(session.userId)
@@ -101,6 +103,40 @@ class SyncRepository(context: Context) {
         val json = JSONObject(it)
         CoupleStatus(json.optBoolean("paired"), json.optBoolean("my_sharing"), json.optBoolean("partner_sharing"), json.optString("partner_name").takeIf { n -> n.isNotBlank() && n != "null" })
     }.onSuccess { setSharingFlag(it.mySharing); prefs.edit().putBoolean("paired", it.paired).apply() }
+
+    /**
+     * Two-way sync of saved places with the shared cloud table. Only runs while paired; before that places stay on this phone
+     * and are uploaded the first time a sync happens after pairing. Order: push deletions, push new places, pull the full list.
+     */
+    suspend fun syncPlaces(): Result<Unit> = runCatching {
+        if (auth.savedSession() == null || !prefs.getBoolean("paired", false)) return@runCatching
+        val deleted = dao.deletedPlaces()
+        if (deleted.isNotEmpty()) {
+            rest.request("DELETE", "shared_places?id=in.(${deleted.joinToString(",") { it.id }})").getOrThrow()
+            dao.purgePlaces(deleted.map { it.id })
+        }
+        val pending = dao.pendingPlaces()
+        if (pending.isNotEmpty()) {
+            val body = JSONArray()
+            pending.forEach { p ->
+                body.put(JSONObject().put("id", p.id).put("name", p.name).put("kind", p.kind).put("latitude", p.latitude).put("longitude", p.longitude)
+                    .put("radius_meters", p.radiusMeters.toDouble()).put("created_at", Instant.ofEpochMilli(p.createdAt).toString()))
+            }
+            rest.request("POST", "shared_places?on_conflict=id", body.toString(), mapOf("Prefer" to "resolution=merge-duplicates,return=minimal")).getOrThrow()
+            dao.markPlacesSynced(pending.map { it.id })
+        }
+        val rows = JSONArray(rest.request("GET", "shared_places?select=id,name,kind,latitude,longitude,radius_meters,created_at").getOrThrow())
+        val remote = (0 until rows.length()).map { i ->
+            val r = rows.getJSONObject(i)
+            SavedPlaceEntity(
+                id = r.getString("id"), name = r.getString("name"), latitude = r.getDouble("latitude"), longitude = r.getDouble("longitude"),
+                radiusMeters = r.getDouble("radius_meters").toFloat(),
+                createdAt = runCatching { OffsetDateTime.parse(r.getString("created_at")).toInstant().toEpochMilli() }.getOrDefault(System.currentTimeMillis()),
+                kind = r.optString("kind", "CUSTOM"), syncState = 1
+            )
+        }
+        dao.applyRemotePlaces(remote)
+    }
 
     suspend fun createInvite(): Result<String> = rest.request("POST", "rpc/create_pairing_invite", "{}").mapCatching { JSONTokener(it).nextValue() as? String ?: error("Unexpected response from server.") }
     suspend fun redeemInvite(code: String): Result<Unit> = rest.request("POST", "rpc/redeem_pairing_invite", JSONObject().put("code", code.trim()).toString()).map { }

@@ -91,7 +91,7 @@ class LocationTrackingService : Service() {
     }
 
     private fun notification() = NotificationCompat.Builder(this, "tracking")
-        .setSmallIcon(R.drawable.ic_launcher_foreground)
+        .setSmallIcon(R.drawable.ic_stat_solace)
         .setContentTitle(getString(R.string.notif_tracking_title))
         .setContentText(getString(R.string.notif_tracking_text))
         .setOngoing(true)

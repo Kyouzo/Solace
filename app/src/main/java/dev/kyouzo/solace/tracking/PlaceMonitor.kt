@@ -36,7 +36,7 @@ object PlaceMonitor {
     private fun notify(context: Context, id: Int, text: String) {
         if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return
         if (Build.VERSION.SDK_INT >= 26) context.getSystemService(NotificationManager::class.java).createNotificationChannel(NotificationChannel("places", context.getString(R.string.notif_channel_places), NotificationManager.IMPORTANCE_DEFAULT))
-        val notification = NotificationCompat.Builder(context, "places").setSmallIcon(R.drawable.ic_launcher_foreground).setContentTitle("Solace").setContentText(text).setAutoCancel(true).build()
+        val notification = NotificationCompat.Builder(context, "places").setSmallIcon(R.drawable.ic_stat_solace).setContentTitle("Solace").setContentText(text).setAutoCancel(true).build()
         NotificationManagerCompat.from(context).notify(id, notification)
     }
 }

@@ -12,6 +12,8 @@ val localProperties = Properties().apply {
 }
 val supabaseUrl = localProperties.getProperty("SUPABASE_URL", "")
 val supabaseAnonKey = localProperties.getProperty("SUPABASE_ANON_KEY", "")
+// Optional. A free MapTiler key turns on HD retina map tiles; without it the app uses plain OpenStreetMap tiles.
+val mapApiKey = localProperties.getProperty("MAP_API_KEY", "")
 
 android {
     namespace = "dev.kyouzo.solace"
@@ -28,6 +30,7 @@ android {
 
         buildConfigField("String", "SUPABASE_URL", "\"$supabaseUrl\"")
         buildConfigField("String", "SUPABASE_ANON_KEY", "\"$supabaseAnonKey\"")
+        buildConfigField("String", "MAP_API_KEY", "\"$mapApiKey\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -70,6 +73,7 @@ dependencies {
     implementation(libs.supabase.realtime)
     implementation(libs.ktor.client.android)
     implementation(libs.osmdroid.android)
+    implementation(libs.osmdroid.mapsforge)
     implementation(libs.androidx.compose.material3.adaptive)
     implementation(libs.androidx.compose.material3.adaptive.layout)
     implementation(libs.androidx.compose.material3.adaptive.navigation)

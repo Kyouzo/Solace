@@ -72,7 +72,13 @@ data class SavedPlaceEntity(
     val latitude: Double,
     val longitude: Double,
     val radiusMeters: Float,
-    val createdAt: Long
+    val createdAt: Long,
+    /** HOME, SCHOOL, WORK or CUSTOM: picks the icon and default name. */
+    val kind: String = "CUSTOM",
+    /** 0 = only on this phone so far, 1 = mirrored in the shared cloud table. */
+    val syncState: Int = 0,
+    /** Tombstone: removed locally, waiting for the cloud delete before being purged. */
+    val deleted: Boolean = false
 )
 
 /** One row per local calendar day that has recorded points. */
@@ -92,15 +98,27 @@ interface LocationDao {
     @Query("SELECT * FROM location_points WHERE id IN (:ids)") suspend fun pointsByIds(ids: List<String>): List<LocationPointEntity>
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun saveRemote(location: RemoteLocationEntity)
     @Query("SELECT * FROM location_points ORDER BY recordedAt DESC LIMIT 1") fun observeLast(): Flow<LocationPointEntity?>
-    @Query("SELECT * FROM saved_places") suspend fun places(): List<SavedPlaceEntity>
+    @Query("SELECT * FROM saved_places WHERE deleted = 0") suspend fun places(): List<SavedPlaceEntity>
     @Query("DELETE FROM sync_outbox WHERE recordId IN (SELECT id FROM location_points WHERE recordedAt < :cutoff)") suspend fun deleteOutboxBefore(cutoff: Long)
     @Query("DELETE FROM location_points WHERE recordedAt < :cutoff") suspend fun deletePointsBefore(cutoff: Long)
     @Transaction suspend fun purgeBefore(cutoff: Long) { deleteOutboxBefore(cutoff); deletePointsBefore(cutoff) }
     @Query("DELETE FROM remote_locations") suspend fun clearRemote()
     @Query("SELECT * FROM remote_locations ORDER BY recordedAt DESC LIMIT 1") fun observeLatestRemote(): Flow<RemoteLocationEntity?>
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun savePlace(place: SavedPlaceEntity)
-    @Query("SELECT * FROM saved_places ORDER BY createdAt DESC") fun observePlaces(): Flow<List<SavedPlaceEntity>>
-    @Query("DELETE FROM saved_places WHERE id = :id") suspend fun deletePlace(id: String)
+    @Query("SELECT * FROM saved_places WHERE deleted = 0 ORDER BY createdAt DESC") fun observePlaces(): Flow<List<SavedPlaceEntity>>
+    @Query("DELETE FROM saved_places WHERE id = :id AND syncState = 0") suspend fun hardDeleteUnsyncedPlace(id: String)
+    @Query("UPDATE saved_places SET deleted = 1 WHERE id = :id") suspend fun tombstonePlace(id: String)
+    /** Never-synced places vanish immediately; synced ones are tombstoned until the cloud delete succeeds. */
+    @Transaction suspend fun removePlace(id: String) { hardDeleteUnsyncedPlace(id); tombstonePlace(id) }
+    @Query("SELECT * FROM saved_places WHERE deleted = 1") suspend fun deletedPlaces(): List<SavedPlaceEntity>
+    @Query("SELECT * FROM saved_places WHERE syncState = 0 AND deleted = 0") suspend fun pendingPlaces(): List<SavedPlaceEntity>
+    @Query("UPDATE saved_places SET syncState = 1 WHERE id IN (:ids)") suspend fun markPlacesSynced(ids: List<String>)
+    @Query("DELETE FROM saved_places WHERE id IN (:ids)") suspend fun purgePlaces(ids: List<String>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun savePlaces(places: List<SavedPlaceEntity>)
+    @Query("DELETE FROM saved_places WHERE syncState = 1 AND id NOT IN (:keep)") suspend fun deleteSyncedPlacesNotIn(keep: List<String>)
+    @Query("DELETE FROM saved_places WHERE syncState = 1") suspend fun deleteSyncedPlaces()
+    /** Mirrors the shared cloud list locally; places the partner removed disappear here too. */
+    @Transaction suspend fun applyRemotePlaces(remote: List<SavedPlaceEntity>) { savePlaces(remote); deleteSyncedPlacesNotIn(remote.map { it.id }) }
 
     @Transaction
     suspend fun insertCapturedPoint(point: LocationPointEntity, cloud: SyncOutboxEntity, peer: SyncOutboxEntity) {
@@ -109,13 +127,20 @@ interface LocationDao {
 }
 
 @TypeConverters(DatabaseConverters::class)
-@Database(entities = [LocationPointEntity::class, SyncOutboxEntity::class, RemoteLocationEntity::class, DeviceEntity::class, AppSettingsEntity::class, SavedPlaceEntity::class], version = 2, exportSchema = true)
+@Database(entities = [LocationPointEntity::class, SyncOutboxEntity::class, RemoteLocationEntity::class, DeviceEntity::class, AppSettingsEntity::class, SavedPlaceEntity::class], version = 3, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun locationDao(): LocationDao
     companion object {
         @Volatile private var instance: AppDatabase? = null
         fun get(context: Context): AppDatabase = instance ?: synchronized(this) {
-            instance ?: Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "solace.db").addMigrations(MIGRATION_1_2).build().also { instance = it }
+            instance ?: Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "solace.db").addMigrations(MIGRATION_1_2, MIGRATION_2_3).build().also { instance = it }
+        }
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE saved_places ADD COLUMN kind TEXT NOT NULL DEFAULT 'CUSTOM'")
+                db.execSQL("ALTER TABLE saved_places ADD COLUMN syncState INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE saved_places ADD COLUMN deleted INTEGER NOT NULL DEFAULT 0")
+            }
         }
         private val MIGRATION_1_2 = object : Migration(1, 2) { override fun migrate(db: SupportSQLiteDatabase) { db.execSQL("CREATE TABLE IF NOT EXISTS saved_places (id TEXT NOT NULL, name TEXT NOT NULL, latitude REAL NOT NULL, longitude REAL NOT NULL, radiusMeters REAL NOT NULL, createdAt INTEGER NOT NULL, PRIMARY KEY(id))"); db.execSQL("CREATE INDEX IF NOT EXISTS index_saved_places_createdAt ON saved_places(createdAt)") } }
     }
