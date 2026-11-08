@@ -1,3 +1,160 @@
 <resources>
     <string name="app_name">Solace</string>
+    <string name="brand">SOLACE</string>
+
+    <!-- Navigation -->
+    <string name="nav_map">Map</string>
+    <string name="nav_history">History</string>
+    <string name="nav_places">Places</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Map -->
+    <string name="pill_recording">Recording</string>
+    <string name="pill_paused">Not recording</string>
+    <string name="action_locate_me">Centre on my location</string>
+    <string name="hero_recording_title">Recording on this phone</string>
+    <string name="hero_ready_title">Ready to record</string>
+    <string name="hero_denied_title">Location is off</string>
+    <string name="hero_ready_body">Saved on your phone. Nothing is shared until you turn sharing on.</string>
+    <string name="hero_denied_body">Allow location to record your movement privately.</string>
+    <string name="map_last_fix">Last fix ±%1$d m · %2$s</string>
+    <string name="map_waiting_gps">Waiting for a GPS fix…</string>
+    <string name="action_allow_location">Allow</string>
+    <string name="action_start">Start</string>
+    <string name="action_stop">Stop</string>
+    <string name="status_title">Private by default</string>
+    <string name="status_body">Sharing is off until you explicitly turn it on.</string>
+    <string name="section_together">Together, on your terms</string>
+    <string name="partner_none_title">No partner connected</string>
+    <string name="partner_none_body">Invite one person when you’re both ready.</string>
+    <string name="partner_seen">Last seen %1$s</string>
+    <string name="partner_waiting">Connected · waiting for their location</string>
+    <string name="action_show">Show</string>
+    <string name="action_set_up">Set up</string>
+    <string name="supporting_sign_in_title">Sign in to pair</string>
+    <string name="supporting_sign_in_body">Open Settings to sign in and connect with your partner.</string>
+    <string name="supporting_sign_in_action">Open Settings</string>
+
+    <!-- History -->
+    <string name="history_title">History</string>
+    <string name="history_day_count">%1$d locations</string>
+    <string name="history_empty_title">No locations recorded</string>
+    <string name="history_empty_body">Start recording on the Map tab. History stays on this phone until you share.</string>
+    <string name="history_summary">%1$d locations · %2$s</string>
+    <string name="history_note">Measurement times are kept exactly as the GPS reported them.</string>
+    <string name="history_pick_day">Select a day to see its route.</string>
+    <string name="distance_m">%1$d m</string>
+    <string name="distance_km">%1$.1f km</string>
+    <string name="accuracy_meters">±%1$d m</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+
+    <!-- Places -->
+    <string name="places_title">Places</string>
+    <string name="places_note">Private places are stored locally on this device.</string>
+    <string name="places_add">Add a place</string>
+    <string name="places_empty_title">No saved places</string>
+    <string name="places_empty_body">Add Home, Work, or a custom location. You’ll get a notification when you or your partner arrive at or leave it.</string>
+    <string name="places_radius">%1$d m radius</string>
+    <string name="places_radius_label">Alert radius</string>
+    <string name="places_use_current">Use my current location</string>
+    <string name="places_delete">Delete</string>
+    <string name="meters_short">%1$d m</string>
+    <string name="field_name">Name</string>
+    <string name="field_latitude">Latitude</string>
+    <string name="field_longitude">Longitude</string>
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+
+    <!-- Account / sign in -->
+    <string name="supabase_missing_title">Supabase isn’t configured</string>
+    <string name="supabase_missing_body">Copy local.properties.example to local.properties and add your project URL and publishable key. The service-role key is never used in the app.</string>
+    <string name="signed_in">Signed in</string>
+    <string name="field_email">Email</string>
+    <string name="field_password">Password</string>
+    <string name="action_create_account">Create account</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_out">Sign out</string>
+    <string name="auth_title_login">Welcome back</string>
+    <string name="auth_title_register">Create your account</string>
+    <string name="auth_subtitle">Sign in to pair with your person. Your location is shared only when you both choose.</string>
+    <string name="auth_error_email">Enter a valid email address</string>
+    <string name="auth_password_hint">At least 6 characters</string>
+    <string name="auth_show_password">Show password</string>
+    <string name="auth_hide_password">Hide password</string>
+    <string name="auth_privacy_note">Your recordings stay on this phone until you turn sharing on.</string>
+    <string name="auth_confirm_email">Check your email to confirm your account, then sign in.</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="auth_error_rate_limit">Too many emails were sent recently. Wait a few minutes, or sign in if you already confirmed.</string>
+    <string name="auth_error_bad_credentials">Wrong email or password.</string>
+    <string name="auth_error_exists">That email already has an account. Try signing in.</string>
+    <string name="auth_error_unconfirmed">Confirm your email first, then sign in.</string>
+    <string name="auth_error_network">Couldn’t reach the server. Check your connection and try again.</string>
+
+    <!-- Partner panel -->
+    <string name="partner_checking">Checking partner status…</string>
+    <string name="partner_invite_hint">Create a one-time code and send it to your person, or enter the code they sent you. Codes expire after 15 minutes.</string>
+    <string name="action_create_invite">Create invitation code</string>
+    <string name="field_partner_code">Enter partner’s code</string>
+    <string name="action_join">Join with code</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="partner_connected_with">Connected with %1$s</string>
+    <string name="partner_default_name">your partner</string>
+    <string name="share_title">Share my location</string>
+    <string name="share_on">On — your phone uploads while recording</string>
+    <string name="share_off">Off — nothing leaves your phone</string>
+    <string name="partner_sharing">Your partner is sharing with you.</string>
+    <string name="partner_not_sharing">Your partner hasn’t turned sharing on. You’ll only see each other when both are on.</string>
+    <string name="partner_last_seen">Partner last seen %1$s (±%2$d m)</string>
+    <string name="action_open_maps">Open in Maps</string>
+    <string name="maps_missing">No maps app installed.</string>
+    <string name="action_sync">Sync now</string>
+    <string name="action_working">Working…</string>
+    <string name="sync_done">Synced — %1$d point(s) uploaded.</string>
+    <string name="sync_last">Last sync %1$s</string>
+    <string name="partner_connected_msg">Connected.</string>
+    <string name="supabase_unreachable">Couldn’t reach Supabase.</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_subtitle">Your account, recording and sharing in one place.</string>
+    <string name="group_account">Account &amp; partner</string>
+    <string name="group_recording">Recording</string>
+    <string name="group_sharing">Sharing</string>
+    <string name="group_privacy">Privacy</string>
+    <string name="group_storage">Storage &amp; maps</string>
+    <string name="rec_title">Offline recording</string>
+    <string name="rec_active">On — visible in the persistent notification</string>
+    <string name="rec_stopped">Off</string>
+    <string name="rec_needs_permission">Allow location to start recording</string>
+    <string name="precision_title">Tracking precision</string>
+    <string name="precision_max">Maximum</string>
+    <string name="precision_max_hint">Every metre · 1 s updates · uses more battery</string>
+    <string name="precision_balanced">Balanced</string>
+    <string name="precision_balanced_hint">Every ~5 m · 10 s updates · saves battery</string>
+    <string name="row_location_sharing">Location sharing</string>
+    <string name="sharing_on">On</string>
+    <string name="sharing_off_paired">Off — turn it on under Account &amp; partner</string>
+    <string name="sharing_off_unpaired">Off — pair with your partner first</string>
+    <string name="row_partner">Partner</string>
+    <string name="partner_connected">Connected</string>
+    <string name="partner_not_connected">Not connected</string>
+    <string name="retention_title">Data retention</string>
+    <string name="retention_hint">Tap to change. Older points are deleted from this phone.</string>
+    <string name="retention_forever">Keep until deleted</string>
+    <string name="retention_days">%1$d days</string>
+    <string name="row_map_tiles">Map tiles</string>
+    <string name="map_tiles_value">Cached as you browse</string>
+    <string name="row_local_history">Local history</string>
+    <string name="local_history_value">On this device</string>
+
+    <!-- Notifications -->
+    <string name="notif_tracking_title">Solace location sharing</string>
+    <string name="notif_tracking_text">Recording locations securely on this device</string>
+    <string name="notif_channel_tracking">Location sharing</string>
+    <string name="notif_channel_places">Place alerts</string>
+    <string name="place_arrived">%1$s arrived at %2$s</string>
+    <string name="place_left">%1$s left %2$s</string>
+    <string name="who_you">You</string>
+    <string name="who_partner">Your partner</string>
 </resources>

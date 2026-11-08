@@ -8,15 +8,21 @@ import java.util.UUID
 import kotlin.math.*
 
 object LocationFilter {
-    fun accepts(location: Location, previous: LocationPointEntity?): Boolean {
-        if (location.latitude !in -90.0..90.0 || location.longitude !in -180.0..180.0 || location.accuracy <= 0f || location.accuracy > 200f) return false
+    fun accepts(location: Location, previous: LocationPointEntity?, precision: TrackingPrecision = TrackingPrecision.MAXIMUM): Boolean =
+        accepts(location.latitude, location.longitude, location.accuracy, location.time, previous, precision)
+
+    /** Pure overload (no Android types) so the filter can be unit tested on the JVM. */
+    fun accepts(latitude: Double, longitude: Double, accuracy: Float, timeMillis: Long, previous: LocationPointEntity?, precision: TrackingPrecision = TrackingPrecision.MAXIMUM): Boolean {
+        if (latitude !in -90.0..90.0 || longitude !in -180.0..180.0) return false
+        if (accuracy <= 0f || accuracy > precision.maxAccuracyM) return false
         if (previous == null) return true
-        val elapsed = (location.time - previous.recordedAt).coerceAtLeast(1L) / 1000.0
-        val distance = distanceMeters(previous.latitude, previous.longitude, location.latitude, location.longitude)
-        return !(distance < 3.0 && location.accuracy >= previous.accuracy) && distance / elapsed < 90.0
+        val elapsed = (timeMillis - previous.recordedAt).coerceAtLeast(1L) / 1000.0
+        val distance = distanceMeters(previous.latitude, previous.longitude, latitude, longitude)
+        if (distance / elapsed >= 90.0) return false // physically implausible jump
+        return distance >= precision.minMoveM
     }
 
-    private fun distanceMeters(aLat: Double, aLon: Double, bLat: Double, bLon: Double): Double {
+    internal fun distanceMeters(aLat: Double, aLon: Double, bLat: Double, bLon: Double): Double {
         val dLat = Math.toRadians(bLat - aLat); val dLon = Math.toRadians(bLon - aLon)
         val h = sin(dLat / 2).pow(2) + cos(Math.toRadians(aLat)) * cos(Math.toRadians(bLat)) * sin(dLon / 2).pow(2)
         return 6_371_000.0 * 2 * atan2(sqrt(h), sqrt(1 - h))

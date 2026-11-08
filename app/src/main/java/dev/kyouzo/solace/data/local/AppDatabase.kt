@@ -75,8 +75,12 @@ data class SavedPlaceEntity(
     val createdAt: Long
 )
 
+/** One row per local calendar day that has recorded points. */
+data class DaySummary(val day: String, val pointCount: Int, val firstAt: Long)
+
 @Dao
 interface LocationDao {
+    @Query("SELECT strftime('%Y-%m-%d', recordedAt / 1000, 'unixepoch', 'localtime') AS day, COUNT(*) AS pointCount, MIN(recordedAt) AS firstAt FROM location_points GROUP BY day ORDER BY day DESC") fun observeDays(): Flow<List<DaySummary>>
     @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insert(point: LocationPointEntity): Long
     @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertOutbox(item: SyncOutboxEntity): Long
     @Query("SELECT * FROM location_points WHERE recordedAt BETWEEN :from AND :to ORDER BY recordedAt") fun observeBetween(from: Long, to: Long): Flow<List<LocationPointEntity>>
@@ -87,6 +91,11 @@ interface LocationDao {
     @Query("SELECT * FROM sync_outbox WHERE state = 'PENDING' AND destination = :destination ORDER BY createdAt LIMIT :limit") suspend fun pendingFor(destination: SyncDestination, limit: Int): List<SyncOutboxEntity>
     @Query("SELECT * FROM location_points WHERE id IN (:ids)") suspend fun pointsByIds(ids: List<String>): List<LocationPointEntity>
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun saveRemote(location: RemoteLocationEntity)
+    @Query("SELECT * FROM location_points ORDER BY recordedAt DESC LIMIT 1") fun observeLast(): Flow<LocationPointEntity?>
+    @Query("SELECT * FROM saved_places") suspend fun places(): List<SavedPlaceEntity>
+    @Query("DELETE FROM sync_outbox WHERE recordId IN (SELECT id FROM location_points WHERE recordedAt < :cutoff)") suspend fun deleteOutboxBefore(cutoff: Long)
+    @Query("DELETE FROM location_points WHERE recordedAt < :cutoff") suspend fun deletePointsBefore(cutoff: Long)
+    @Transaction suspend fun purgeBefore(cutoff: Long) { deleteOutboxBefore(cutoff); deletePointsBefore(cutoff) }
     @Query("DELETE FROM remote_locations") suspend fun clearRemote()
     @Query("SELECT * FROM remote_locations ORDER BY recordedAt DESC LIMIT 1") fun observeLatestRemote(): Flow<RemoteLocationEntity?>
     @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun savePlace(place: SavedPlaceEntity)

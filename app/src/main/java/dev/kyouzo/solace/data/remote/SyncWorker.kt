@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit
 
 class SyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
+        runCatching { dev.kyouzo.solace.tracking.Retention.purge(applicationContext) }
         val repo = SyncRepository(applicationContext)
         if (repo.session() == null) return Result.success()
         return repo.syncNow().fold({ Result.success() }, { if (runAttemptCount < 5) Result.retry() else Result.failure() })

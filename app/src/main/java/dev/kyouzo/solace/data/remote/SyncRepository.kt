@@ -6,6 +6,7 @@ import dev.kyouzo.solace.data.local.AppDatabase
 import dev.kyouzo.solace.data.local.RemoteLocationEntity
 import dev.kyouzo.solace.data.local.SyncDestination
 import dev.kyouzo.solace.data.local.SyncState
+import dev.kyouzo.solace.tracking.PlaceMonitor
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
@@ -28,6 +29,8 @@ class SyncRepository(context: Context) {
 
     suspend fun syncNow(): Result<SyncReport> = runCatching {
         val session = auth.savedSession() ?: error("Sign in first.")
+        // Refresh the server-side sharing/pairing state first so the local flag never goes stale (e.g. after reinstall).
+        coupleStatus()
         var uploaded = 0
         if (sharingEnabled(app)) {
             registerDevice(session.userId)
@@ -48,7 +51,7 @@ class SyncRepository(context: Context) {
 
     private suspend fun uploadPending(userId: String): Int {
         var total = 0
-        repeat(20) {
+        repeat(100) {
             val outbox = dao.pendingFor(SyncDestination.CLOUD, 200)
             if (outbox.isEmpty()) return total
             val points = dao.pointsByIds(outbox.map { it.recordId }).associateBy { it.id }
@@ -81,21 +84,23 @@ class SyncRepository(context: Context) {
         // Server returns nothing unless both people have sharing on; mirror that locally so stale data disappears.
         dao.clearRemote()
         var latest: Long? = null
+        var latestPoint: Pair<Double, Double>? = null
         for (i in 0 until rows.length()) {
             val row = rows.getJSONObject(i)
             val point = row.optJSONObject("location_points") ?: continue
             val recordedAt = OffsetDateTime.parse(row.getString("recorded_at")).toInstant().toEpochMilli()
             val receivedAt = runCatching { OffsetDateTime.parse(point.getString("received_at")).toInstant().toEpochMilli() }.getOrDefault(recordedAt)
             dao.saveRemote(RemoteLocationEntity(point.getString("id"), row.getString("user_id"), point.getDouble("latitude"), point.getDouble("longitude"), point.getDouble("accuracy").toFloat(), recordedAt, receivedAt))
-            if (latest == null || recordedAt > latest) latest = recordedAt
+            if (latest == null || recordedAt > latest) { latest = recordedAt; latestPoint = point.getDouble("latitude") to point.getDouble("longitude") }
         }
+        latestPoint?.let { PlaceMonitor.check(app, "partner", it.first, it.second) }
         return latest
     }
 
     suspend fun coupleStatus(): Result<CoupleStatus> = rest.request("POST", "rpc/couple_status", "{}").mapCatching {
         val json = JSONObject(it)
         CoupleStatus(json.optBoolean("paired"), json.optBoolean("my_sharing"), json.optBoolean("partner_sharing"), json.optString("partner_name").takeIf { n -> n.isNotBlank() && n != "null" })
-    }.onSuccess { setSharingFlag(it.mySharing) }
+    }.onSuccess { setSharingFlag(it.mySharing); prefs.edit().putBoolean("paired", it.paired).apply() }
 
     suspend fun createInvite(): Result<String> = rest.request("POST", "rpc/create_pairing_invite", "{}").mapCatching { JSONTokener(it).nextValue() as? String ?: error("Unexpected response from server.") }
     suspend fun redeemInvite(code: String): Result<Unit> = rest.request("POST", "rpc/redeem_pairing_invite", JSONObject().put("code", code.trim()).toString()).map { }

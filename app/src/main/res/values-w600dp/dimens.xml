@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="screen_padding">32dp</dimen>
+    <dimen name="map_max_height">480dp</dimen>
+</resources>
