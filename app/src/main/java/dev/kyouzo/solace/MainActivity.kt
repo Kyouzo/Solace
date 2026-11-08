@@ -11,6 +11,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -53,11 +54,11 @@ private val destinations = listOf(Destination("Map", Icons.Outlined.Map), Destin
 @Composable private fun SolaceApp() {
     var selected by remember { mutableIntStateOf(0) }
     Scaffold(containerColor = MaterialTheme.colorScheme.background, bottomBar = { NavigationBar(containerColor = MaterialTheme.colorScheme.surface) { destinations.forEachIndexed { index, item -> NavigationBarItem(selected = selected == index, onClick = { selected = index }, icon = { Icon(item.icon, contentDescription = item.label) }, label = { Text(item.label) }) } } }) { padding ->
-        when (selected) { 0 -> MapScreen(Modifier.padding(padding)); 1 -> HistoryScreen(Modifier.padding(padding)); 2 -> PlacesScreen(Modifier.padding(padding)); 3 -> AccountScreen(Modifier.padding(padding)); else -> SettingsScreen(Modifier.padding(padding)) }
+        when (selected) { 0 -> MapScreen(Modifier.padding(padding), onOpenAccount = { selected = 3 }); 1 -> HistoryScreen(Modifier.padding(padding)); 2 -> PlacesScreen(Modifier.padding(padding)); 3 -> AccountScreen(Modifier.padding(padding)); else -> SettingsScreen(Modifier.padding(padding)) }
     }
 }
 
-@Composable private fun MapScreen(modifier: Modifier = Modifier) {
+@Composable private fun MapScreen(modifier: Modifier = Modifier, onOpenAccount: () -> Unit = {}) {
     val context = LocalContext.current
     var tracking by remember { mutableStateOf(context.getSharedPreferences("tracking", Context.MODE_PRIVATE).getBoolean("active", false)) }
     var locationGranted by remember { mutableStateOf(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) }
@@ -68,7 +69,7 @@ private val destinations = listOf(Destination("Map", Icons.Outlined.Map), Destin
             MapTexture(); Column(Modifier.align(Alignment.Center).padding(30.dp), horizontalAlignment = Alignment.CenterHorizontally) { Text(if (tracking) "Recording securely on this phone" else if (locationGranted) "Location sharing is ready" else "Your location stays on your phone", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center); Spacer(Modifier.height(8.dp)); Text(if (tracking) "Locations are saved offline until you choose to share." else if (locationGranted) "Start private offline recording when you’re ready." else "Allow location to record trips offline and share only with your chosen person.", color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center); Spacer(Modifier.height(20.dp)); Button(onClick = { if (!locationGranted) requestLocation.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)) else if (!tracking) { startTracking(context); tracking = true } else { stopTracking(context); tracking = false } }) { Text(if (!locationGranted) "Allow location" else if (tracking) "Stop recording" else "Start recording") } }
             Surface(Modifier.align(Alignment.BottomStart).padding(16.dp), shape = RoundedCornerShape(30.dp), color = Color(0xDD302C47)) { Text("•  Offline recording", Modifier.padding(horizontal = 13.dp, vertical = 8.dp), color = Color(0xFFF2B8D2)) }
         } }
-        item { StatusCard() }; item { SectionTitle("Together, on your terms") }; item { PrivacyCard("No partner connected", "Invite one person when you’re both ready.", "Create invitation") }; item { Spacer(Modifier.height(8.dp)) }
+        item { StatusCard() }; item { SectionTitle("Together, on your terms") }; item { PrivacyCard("No partner connected", "Invite one person when you’re both ready.", "Create invitation", onOpenAccount) }; item { Spacer(Modifier.height(8.dp)) }
     }
 }
 
@@ -84,4 +85,4 @@ private fun stopTracking(context: Context) { context.stopService(Intent(context,
 @Composable private fun SettingsGroup(title: String, rows: List<Pair<String, String>>) { Text(title, modifier = Modifier.padding(top = 12.dp), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.SemiBold); Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) { Column { rows.forEachIndexed { i, row -> Row(Modifier.fillMaxWidth().padding(18.dp), horizontalArrangement = Arrangement.SpaceBetween) { Text(row.first); Text(row.second, color = MaterialTheme.colorScheme.onSurfaceVariant) }; if (i < rows.lastIndex) Box(Modifier.fillMaxWidth().height(1.dp).background(MaterialTheme.colorScheme.outlineVariant)) } } } }
 @Composable private fun BrandHeader(subtitle: String) { Text("SOLACE", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.ExtraBold); Spacer(Modifier.height(5.dp)); Text(subtitle, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold) }
 @Composable private fun SectionTitle(text: String) = Text(text, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold)
-@Composable private fun PrivacyCard(title: String, text: String, action: String) = Card(shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) { Column(Modifier.padding(20.dp)) { Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold); Spacer(Modifier.height(6.dp)); Text(text, color = MaterialTheme.colorScheme.onSurfaceVariant); Spacer(Modifier.height(14.dp)); Text(action, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold) } }
+@Composable private fun PrivacyCard(title: String, text: String, action: String, onClick: (() -> Unit)? = null) = Card(modifier = if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier, shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) { Column(Modifier.padding(20.dp)) { Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold); Spacer(Modifier.height(6.dp)); Text(text, color = MaterialTheme.colorScheme.onSurfaceVariant); Spacer(Modifier.height(14.dp)); Text(action, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold) } }

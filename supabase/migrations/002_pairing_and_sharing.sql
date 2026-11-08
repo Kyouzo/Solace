@@ -80,3 +80,6 @@ end; $$;
 
 revoke all on function public.create_pairing_invite(), public.redeem_pairing_invite(text), public.set_sharing(boolean), public.couple_status() from public, anon;
 grant execute on function public.create_pairing_invite(), public.redeem_pairing_invite(text), public.set_sharing(boolean), public.couple_status() to authenticated;
+
+-- Make PostgREST pick up the new functions immediately.
+notify pgrst, 'reload schema';
